@@ -1,3 +1,1 @@
 # RCS
-
-Technical Test
