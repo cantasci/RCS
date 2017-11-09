@@ -4,32 +4,15 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
-using RateCalculationSystem.ConsoleApplication.Calculation;
 using RateCalculationSystem.ConsoleApplication.Helper;
 using RateCalculationSystem.ConsoleApplication.Models;
+using RateCalculationSystem.ConsoleApplication.Quote;
 using RateCalculationSystem.Core.Calculations;
 using RateCalculationSystem.Core.Calculations.RateCalculation;
 using RateCalculationSystem.Core.Models.Rate;
 
 namespace RateCalculationSystem.ConsoleApplication
-{
-    #region Error Messages
-
-    /// <summary>
-    ///     All error message of application
-    /// </summary>
-    internal static class ErrorMessage
-    {
-        public const string SampleUsage = "Sample usage: RateCalculationSystem.ConsoleApplication.exe market.csv 1000";
-        public const string MissingArgument = "Expected 2 arguments. " + SampleUsage;
-        public const string ThereIsNoAvailableOffer = "It is not possible to provide a quote at this time";
-        public const string RequestAmountIsNotValid = "Requested amount is not valid value";
-        public const string CouldNotResolveArguments = "Could not resolve arguments. " + SampleUsage;
-        public const string RequestedAmountOutOfRange = "Requested amount must be between 1000 and 15000";
-        public const string RequestedAmountIsNotMultipleOf100 = "You can enter only loan amount which is multiples of 100";
-    }
-
-    #endregion
+{ 
 
     internal class Program
     {
@@ -56,10 +39,10 @@ namespace RateCalculationSystem.ConsoleApplication
                 fetchMarketData = fetchMarketData.OrderBy(m => m.Rate).ThenByDescending(m => m.Available).ToList();
 
                 //  init payment calculation engine
-                var paymentCalculation = new PaymentCalculation(Terms);
+                var paymentCalculation = new QuoteFinder(Terms);
 
                 // get result
-                var result = paymentCalculation.GetOffer(argumentModel, fetchMarketData);
+                var result = paymentCalculation.GetQuote(argumentModel, fetchMarketData);
 
                 // print result
                 PrintResult(result);

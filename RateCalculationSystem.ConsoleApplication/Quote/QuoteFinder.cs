@@ -1,23 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using RateCalculationSystem.ConsoleApplication.Helper;
 using RateCalculationSystem.ConsoleApplication.Models;
 using RateCalculationSystem.Core.Calculations;
 using RateCalculationSystem.Core.Calculations.RateCalculation;
 using RateCalculationSystem.Core.Models.Rate;
 
-namespace RateCalculationSystem.ConsoleApplication.Calculation
+namespace RateCalculationSystem.ConsoleApplication.Quote
 {
     /// <summary>
     /// Get offer for good match with requested amount
     /// </summary>
-    public class PaymentCalculation
+    public class QuoteFinder
     {
-        public PaymentCalculation() { }
+        public QuoteFinder() { }
 
-        public PaymentCalculation(int term)
+        public QuoteFinder(int term)
         {
             this.Term = term;
         }
@@ -30,7 +29,7 @@ namespace RateCalculationSystem.ConsoleApplication.Calculation
         /// </summary>
         /// <param name="requestedAmount"></param>
         /// <param name="marketDatas"></param>
-        private void ValidateLoanAmount(decimal requestedAmount, List<MarketData> marketDatas)
+        private void ValidateRequestedAmount(decimal requestedAmount, List<MarketData> marketDatas)
         {
             // validate inputs
             if (requestedAmount < 1000 || requestedAmount > 15000)
@@ -50,7 +49,7 @@ namespace RateCalculationSystem.ConsoleApplication.Calculation
         /// </summary>
         /// <param name="requestedAmount"></param>
         /// <param name="lenderMarkerDatas"></param>
-        private List<MarketRateOutputModel<decimal>> FindBestLender(decimal requestedAmount, List<MarketData> lenderMarkerDatas)
+        private List<MarketRateOutputModel<decimal>> FindPossibleQuote(decimal requestedAmount, List<MarketData> lenderMarkerDatas)
         {
             // init rate calculation object
             ICalculation<MarketRateInputModel<decimal>, MarketRateOutputModel<decimal>> rateCalculation =
@@ -100,16 +99,16 @@ namespace RateCalculationSystem.ConsoleApplication.Calculation
         /// <param name="argumentModel"></param>
         /// <param name="fetchMarketData"></param>
         /// <returns></returns>
-        public MarketRateOutputModel<decimal> GetOffer(ArgumentModel argumentModel, List<MarketData> fetchMarketData)
+        public MarketRateOutputModel<decimal> GetQuote(ArgumentModel argumentModel, List<MarketData> fetchMarketData)
         {
             // validate loand amount
-            ValidateLoanAmount(argumentModel.RequestedAmount, fetchMarketData);
+            ValidateRequestedAmount(argumentModel.RequestedAmount, fetchMarketData);
 
-            // find best lender offer
-            var foundLenderOffers = FindBestLender(argumentModel.RequestedAmount, fetchMarketData);
+            // find possible quote
+            var possibleQuotes = FindPossibleQuote(argumentModel.RequestedAmount, fetchMarketData);
 
-            // check present lender offer
-            if (foundLenderOffers.Count == 0)
+            // check present quotes
+            if (possibleQuotes.Count == 0)
                 throw new Exception(ErrorMessage.ThereIsNoAvailableOffer);
 
             // assing default values
@@ -121,13 +120,13 @@ namespace RateCalculationSystem.ConsoleApplication.Calculation
                 TotalPayment = 0
             };
 
-            // combine selected offers
-            foreach (var foundLenderOffer in foundLenderOffers)
+            // combine selected quote
+            foreach (var possibleQuote in possibleQuotes)
             {
-                result.Rate += (double)(foundLenderOffer.RequstedAmount * (decimal)foundLenderOffer.Rate) /
+                result.Rate += (double)(possibleQuote.RequstedAmount * (decimal)possibleQuote.Rate) /
                                        (double)result.RequstedAmount;
-                result.MonthlyPayment += foundLenderOffer.MonthlyPayment;
-                result.TotalPayment += foundLenderOffer.TotalPayment;
+                result.MonthlyPayment += possibleQuote.MonthlyPayment;
+                result.TotalPayment += possibleQuote.TotalPayment;
             }
 
             return result;

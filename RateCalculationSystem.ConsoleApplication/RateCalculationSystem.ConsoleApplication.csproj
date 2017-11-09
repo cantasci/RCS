@@ -46,7 +46,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Calculation\PaymentCalculation.cs" />
+    <Compile Include="Helper\ErrorMessage.cs" />
+    <Compile Include="Quote\QuoteFinder.cs" />
     <Compile Include="Extensions\DecimalExtension.cs" />
     <Compile Include="Helper\FileHelper.cs" />
     <Compile Include="Models\ArgumentModel.cs" />

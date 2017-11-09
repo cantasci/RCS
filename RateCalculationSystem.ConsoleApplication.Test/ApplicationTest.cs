@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using RateCalculationSystem.ConsoleApplication.Calculation;
 using RateCalculationSystem.ConsoleApplication.Models;
+using RateCalculationSystem.ConsoleApplication.Quote;
 
 namespace RateCalculationSystem.ConsoleApplication.Test
 {
@@ -15,7 +15,7 @@ namespace RateCalculationSystem.ConsoleApplication.Test
         [TestMethod]
         public void expect_exception_when_requested_amount_is_out_of_range()
         {
-            PaymentCalculation paymentCalculation = new PaymentCalculation(36);
+            QuoteFinder quoteFinder = new QuoteFinder(36);
             var emptyMarketData = new List<MarketData>();
             var externalArgument = new ArgumentModel()
             {
@@ -23,7 +23,7 @@ namespace RateCalculationSystem.ConsoleApplication.Test
             };
 
             // excepted result is true 
-            ExpectException<Exception>(() => paymentCalculation.GetOffer(externalArgument, emptyMarketData));
+            ExpectException<Exception>(() => quoteFinder.GetQuote(externalArgument, emptyMarketData));
         }
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace RateCalculationSystem.ConsoleApplication.Test
         [TestMethod]
         public void expect_exception_when_requested_amount_is_not_multiple_of_100()
         {
-            PaymentCalculation paymentCalculation = new PaymentCalculation(36);
+            QuoteFinder quoteFinder = new QuoteFinder(36);
             var emptyMarketData = new List<MarketData>();
             var externalArgument = new ArgumentModel()
             {
@@ -40,7 +40,7 @@ namespace RateCalculationSystem.ConsoleApplication.Test
             };
 
             // excepted result is true 
-            ExpectException<Exception>(() => paymentCalculation.GetOffer(externalArgument, emptyMarketData));
+            ExpectException<Exception>(() => quoteFinder.GetQuote(externalArgument, emptyMarketData));
 
         }
 
@@ -50,15 +50,15 @@ namespace RateCalculationSystem.ConsoleApplication.Test
         [TestMethod]
         public void expect_exception_when_there_is_no_lender_offer()
         {
-            PaymentCalculation paymentCalculation = new PaymentCalculation(36);
+            QuoteFinder quoteFinder = new QuoteFinder(36);
             var emptyMarketData = new List<MarketData>();
             var externalArgument = new ArgumentModel()
             {
                 RequestedAmount = 1000
             };
 
-            // excepted result is true 
-            ExpectException<Exception>(() => paymentCalculation.GetOffer(externalArgument, emptyMarketData));
+            // excepted an exception with message It is not possible to provide a quoteFinder at this time
+            ExpectException<Exception>(() => quoteFinder.GetQuote(externalArgument, emptyMarketData));
 
         }
 
