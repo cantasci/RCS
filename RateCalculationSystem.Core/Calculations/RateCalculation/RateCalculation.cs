@@ -24,8 +24,7 @@ namespace RateCalculationSystem.Core.Calculations.RateCalculation
                 throw new ArgumentException("Argument interestRate  must be greater than zero");
 
 
-            // Monthly interest rate is the yearly rate divided by 12
-            //double monthlyRate = lenderOfferInput.InterestReate / 12.3809; // correct answer with yearly rate divided 12.3809. why?
+            // Monthly interest rate is the yearly rate divided by 12 
             var monthlyRate = lenderOfferInput.InterestReate / 12.0;
 
             // Calculate the monthly payment 

@@ -17,6 +17,12 @@ namespace RateCalculationSystem.Core.Reader.FileReader
             Init(filePath, delimeter);
         }
 
+        private void Init(string filePath, string delimeter)
+        {
+            Delimeter = delimeter;
+            FilePath = filePath;
+        }
+
         /// <summary>
         ///     Read csv file
         /// </summary>
@@ -54,13 +60,7 @@ namespace RateCalculationSystem.Core.Reader.FileReader
         {
             return Datas;
         }
-
-        private void Init(string filePath, string delimeter)
-        {
-            Delimeter = delimeter;
-            FilePath = filePath;
-        }
-
+         
         #region Properties
 
         public string Delimeter { get; set; }

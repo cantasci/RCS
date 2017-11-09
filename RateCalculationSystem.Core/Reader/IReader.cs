@@ -5,7 +5,7 @@ namespace RateCalculationSystem.Core.Reader
     public interface IReader
     {
         /// <summary>
-        ///     Read action
+        ///     Read all lines of file
         /// </summary>
         void Read();
 
