@@ -17,6 +17,6 @@ namespace RateCalculationSystem.ConsoleApplication.Helper
         public const string RequestAmountIsNotValid = "Requested amount is not valid value";
         public const string CouldNotResolveArguments = "Could not resolve arguments. " + SampleUsage;
         public const string RequestedAmountOutOfRange = "Requested amount must be between 1000 and 15000";
-        public const string RequestedAmountIsNotMultipleOf100 = "You can enter only loan amount which is multiples of 100";
+        public const string RequestedAmountIsNotMultipleOf100 = "You should request only loan amount which is multiples of 100";
     }
 }

@@ -22,7 +22,7 @@ namespace RateCalculationSystem.ConsoleApplication.Test
                 RequestedAmount = 500
             };
 
-            // excepted result is true 
+            // excepted an exception with message "Requested amount must be between 1000 and 15000"
             ExpectException<Exception>(() => quoteFinder.GetQuote(externalArgument, emptyMarketData));
         }
 
@@ -39,7 +39,7 @@ namespace RateCalculationSystem.ConsoleApplication.Test
                 RequestedAmount = 1010
             };
 
-            // excepted result is true 
+            // excepted an exception with message "You should request only loan amount which is multiples of 100"
             ExpectException<Exception>(() => quoteFinder.GetQuote(externalArgument, emptyMarketData));
 
         }
@@ -57,7 +57,7 @@ namespace RateCalculationSystem.ConsoleApplication.Test
                 RequestedAmount = 1000
             };
 
-            // excepted an exception with message It is not possible to provide a quoteFinder at this time
+            // excepted an exception with message "It is not possible to provide a quoteFinder at this time"
             ExpectException<Exception>(() => quoteFinder.GetQuote(externalArgument, emptyMarketData));
 
         }
