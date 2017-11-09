@@ -15,7 +15,7 @@ namespace RateCalculationSystem.Core.Test
         [TestMethod]
         public void expect_exception_when_argument_equals_null()
         {
-            ICalculation<LenderOfferInputModel<decimal>, RateOutputModel<decimal>> rateCalculation =
+            ICalculation<MarketRateInputModel<decimal>, MarketRateOutputModel<decimal>> rateCalculation =
                 new RateCalculation();
 
             ExpectException<ArgumentNullException>(() => rateCalculation.Calculate(null));
@@ -28,7 +28,7 @@ namespace RateCalculationSystem.Core.Test
         [TestMethod]
         public void expect_exception_when_arguments_equal_zero()
         {
-            ICalculation<LenderOfferInputModel<decimal>, RateOutputModel<decimal>> rateCalculation =
+            ICalculation<MarketRateInputModel<decimal>, MarketRateOutputModel<decimal>> rateCalculation =
                 new RateCalculation();
 
             var loanAmount = 1000;
@@ -37,15 +37,15 @@ namespace RateCalculationSystem.Core.Test
 
             // except exception because of amount equals zero
             ExpectException<ArgumentException>(() =>
-                rateCalculation.Calculate(new LenderOfferInputModel<decimal>(0, term, rate)));
+                rateCalculation.Calculate(new MarketRateInputModel<decimal>(0, term, rate)));
 
             // except exception because of term equals zero
             ExpectException<ArgumentException>(() =>
-                rateCalculation.Calculate(new LenderOfferInputModel<decimal>(loanAmount, 0, rate)));
+                rateCalculation.Calculate(new MarketRateInputModel<decimal>(loanAmount, 0, rate)));
 
             // except exception because of rate equals zero
             ExpectException<ArgumentException>(() =>
-                rateCalculation.Calculate(new LenderOfferInputModel<decimal>(loanAmount, term, 0)));
+                rateCalculation.Calculate(new MarketRateInputModel<decimal>(loanAmount, term, 0)));
         }
 
         /// <summary>
@@ -54,13 +54,13 @@ namespace RateCalculationSystem.Core.Test
         [TestMethod]
         public void expect_true_for_correct_requested_amount()
         {
-            ICalculation<LenderOfferInputModel<decimal>, RateOutputModel<decimal>> rateCalculation =
+            ICalculation<MarketRateInputModel<decimal>, MarketRateOutputModel<decimal>> rateCalculation =
                 new RateCalculation();
 
             var loanAmount = 1000;
             var rate = 0.07;
             var term = 36;
-            var result = rateCalculation.Calculate(new LenderOfferInputModel<decimal>(loanAmount, term, rate));
+            var result = rateCalculation.Calculate(new MarketRateInputModel<decimal>(loanAmount, term, rate));
 
             Assert.AreEqual(loanAmount, result.RequstedAmount);
         }
@@ -72,16 +72,16 @@ namespace RateCalculationSystem.Core.Test
         [TestMethod]
         public void expect_true_for_correct_monthly_repayment()
         {
-            ICalculation<LenderOfferInputModel<decimal>, RateOutputModel<decimal>> rateCalculation =
+            ICalculation<MarketRateInputModel<decimal>, MarketRateOutputModel<decimal>> rateCalculation =
                 new RateCalculation();
 
             var loanAmount = 1000;
             var rate = 0.07;
             var term = 36;
-            var result = rateCalculation.Calculate(new LenderOfferInputModel<decimal>(loanAmount, term, rate));
+            var result = rateCalculation.Calculate(new MarketRateInputModel<decimal>(loanAmount, term, rate));
 
             // excepted result is 30.87 
-            var expectedMonthlyPayment = (decimal) 30.88;
+            var expectedMonthlyPayment = (decimal) 30.87;
             var currentMonthlyPayment = Math.Truncate(result.MonthlyPayment * 100) / 100;
             Assert.AreEqual(expectedMonthlyPayment, currentMonthlyPayment);
         }
@@ -93,16 +93,16 @@ namespace RateCalculationSystem.Core.Test
         [TestMethod]
         public void expect_true_for_correct_total_repayment()
         {
-            ICalculation<LenderOfferInputModel<decimal>, RateOutputModel<decimal>> rateCalculation =
+            ICalculation<MarketRateInputModel<decimal>, MarketRateOutputModel<decimal>> rateCalculation =
                 new RateCalculation();
 
             var loanAmount = 1000;
             var rate = 0.07;
             var term = 36;
-            var result = rateCalculation.Calculate(new LenderOfferInputModel<decimal>(loanAmount, term, rate));
+            var result = rateCalculation.Calculate(new MarketRateInputModel<decimal>(loanAmount, term, rate));
 
             // excepted result is true
-            var expectedTotalPayment = (decimal) 1111.68;
+            var expectedTotalPayment = (decimal) 1111.57;
             var currentTotalPayment = Math.Truncate(result.TotalPayment * 100) / 100;
             Assert.AreEqual(expectedTotalPayment, currentTotalPayment);
         }

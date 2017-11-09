@@ -6,42 +6,57 @@ namespace RateCalculationSystem.Core.Calculations.RateCalculation
     /// <summary>
     ///     Decimal Rate Calculation
     /// </summary>
-    public class RateCalculation : ICalculation<LenderOfferInputModel<decimal>, RateOutputModel<decimal>>
+    public class RateCalculation : ICalculation<MarketRateInputModel<decimal>, MarketRateOutputModel<decimal>>
     {
+        /// <summary>
+        /// Validate market rate input
+        /// </summary>
+        /// <param name="marketRateInput"></param>
+        private void ValidateCalculationInput(MarketRateInputModel<decimal> marketRateInput)
+        {
+            // check parameters
+            if (marketRateInput == null)
+                throw new ArgumentNullException("marketRateInput");
+            if (marketRateInput.Amount <= 0)
+                throw new ArgumentException("Argument amount must be greater than zero");
+            if (marketRateInput.Term <= 0)
+                throw new ArgumentException("Argument termInMonth  must be greater than zero");
+            if (marketRateInput.Rate <= 0)
+                throw new ArgumentException("Argument rate  must be greater than zero");
+        }
+
         /// <summary>
         ///     Calculate montly repayment and total repayment
         /// </summary>
-        /// <param name="lenderOfferInput"></param>
+        /// <param name="marketRateInput"></param>
         /// <returns></returns>
-        public RateOutputModel<decimal> Calculate(LenderOfferInputModel<decimal> lenderOfferInput)
+        public MarketRateOutputModel<decimal> Calculate(MarketRateInputModel<decimal> marketRateInput)
         {
-            // check parameters
-            if (lenderOfferInput == null) throw new ArgumentNullException("lenderOfferInput");
-            if (lenderOfferInput.Amount <= 0) throw new ArgumentException("Argument amount must be greater than zero");
-            if (lenderOfferInput.TermInMonth <= 0)
-                throw new ArgumentException("Argument termInMonth  must be greater than zero");
-            if (lenderOfferInput.InterestReate <= 0)
-                throw new ArgumentException("Argument interestRate  must be greater than zero");
+            // validate
+            ValidateCalculationInput(marketRateInput);
+
+            var monthlyRate = marketRateInput.Rate;
+
+            // divi the apr by 100 to get decimal percentage, if necessary
+            if (marketRateInput.Rate > 0)
+                monthlyRate = monthlyRate / 100;
 
 
-            // Monthly interest rate is the yearly rate divided by 12 
-            var monthlyRate = lenderOfferInput.InterestReate / 12.0;
+            // Monthly rate is the yearly rate divided by 12 
+            monthlyRate = marketRateInput.Rate / 12.0;
 
             // Calculate the monthly payment 
-            var monthlyPayment = lenderOfferInput.Amount * (decimal) monthlyRate /
-                                 (decimal) (1 - Math.Pow(1 + monthlyRate, -lenderOfferInput.TermInMonth));
-
-            // round monthly payment
-            monthlyPayment = Math.Round(monthlyPayment, 2);
-
+            var monthlyPayment = marketRateInput.Amount * (decimal) monthlyRate /
+                                 (decimal) (1 - Math.Pow(1 + monthlyRate, -marketRateInput.Term));
+            
             // Calculate the total payment
-            var totalPayment = Math.Round(monthlyPayment, 2) * lenderOfferInput.TermInMonth;
+            var totalPayment = monthlyPayment * marketRateInput.Term;
 
-            return new RateOutputModel<decimal>
+            return new MarketRateOutputModel<decimal>
             {
-                InterestRate = lenderOfferInput.InterestReate,
+                Rate = marketRateInput.Rate,
                 MonthlyPayment = monthlyPayment,
-                RequstedAmount = lenderOfferInput.Amount,
+                RequstedAmount = marketRateInput.Amount,
                 TotalPayment = totalPayment
             };
         }

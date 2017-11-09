@@ -17,12 +17,12 @@ namespace RateCalculationSystem.ConsoleApplication.Calculation
     {
         public PaymentCalculation() { }
 
-        public PaymentCalculation(int termInMonths)
+        public PaymentCalculation(int term)
         {
-            this.TermInMonths = termInMonths;
+            this.Term = term;
         }
 
-        public int TermInMonths { get; set; }
+        public int Term { get; set; }
 
 
         /// <summary>
@@ -50,14 +50,14 @@ namespace RateCalculationSystem.ConsoleApplication.Calculation
         /// </summary>
         /// <param name="requestedAmount"></param>
         /// <param name="lenderMarkerDatas"></param>
-        private List<RateOutputModel<decimal>> FindBestLender(decimal requestedAmount, List<MarketData> lenderMarkerDatas)
+        private List<MarketRateOutputModel<decimal>> FindBestLender(decimal requestedAmount, List<MarketData> lenderMarkerDatas)
         {
             // init rate calculation object
-            ICalculation<LenderOfferInputModel<decimal>, RateOutputModel<decimal>> rateCalculation =
+            ICalculation<MarketRateInputModel<decimal>, MarketRateOutputModel<decimal>> rateCalculation =
                 new RateCalculation();
 
             // init selected offer collection
-            var combineLenderOffer = new List<RateOutputModel<decimal>>();
+            var combineLenderOffer = new List<MarketRateOutputModel<decimal>>();
 
             // requestedAmount assign to neededAmount
             var neededAmount = requestedAmount;
@@ -70,11 +70,11 @@ namespace RateCalculationSystem.ConsoleApplication.Calculation
                     : neededAmount;
 
                 // assign input parameters
-                var rateInput = new LenderOfferInputModel<decimal>
+                var rateInput = new MarketRateInputModel<decimal>
                 {
                     Amount = available,
-                    InterestReate = lenderData.Rate,
-                    TermInMonth = TermInMonths
+                    Rate = lenderData.Rate,
+                    Term = Term
                 };
 
                 // calculate rate and repayment
@@ -100,7 +100,7 @@ namespace RateCalculationSystem.ConsoleApplication.Calculation
         /// <param name="argumentModel"></param>
         /// <param name="fetchMarketData"></param>
         /// <returns></returns>
-        public RateOutputModel<decimal> GetOffer(ArgumentModel argumentModel, List<MarketData> fetchMarketData)
+        public MarketRateOutputModel<decimal> GetOffer(ArgumentModel argumentModel, List<MarketData> fetchMarketData)
         {
             // validate loand amount
             ValidateLoanAmount(argumentModel.RequestedAmount, fetchMarketData);
@@ -113,9 +113,9 @@ namespace RateCalculationSystem.ConsoleApplication.Calculation
                 throw new Exception(ErrorMessage.ThereIsNoAvailableOffer);
 
             // assing default values
-            var result = new RateOutputModel<decimal>
+            var result = new MarketRateOutputModel<decimal>
             {
-                InterestRate = 0,
+                Rate = 0,
                 MonthlyPayment = 0,
                 RequstedAmount = argumentModel.RequestedAmount,
                 TotalPayment = 0
@@ -124,7 +124,7 @@ namespace RateCalculationSystem.ConsoleApplication.Calculation
             // combine selected offers
             foreach (var foundLenderOffer in foundLenderOffers)
             {
-                result.InterestRate += (double)(foundLenderOffer.RequstedAmount * (decimal)foundLenderOffer.InterestRate) /
+                result.Rate += (double)(foundLenderOffer.RequstedAmount * (decimal)foundLenderOffer.Rate) /
                                        (double)result.RequstedAmount;
                 result.MonthlyPayment += foundLenderOffer.MonthlyPayment;
                 result.TotalPayment += foundLenderOffer.TotalPayment;

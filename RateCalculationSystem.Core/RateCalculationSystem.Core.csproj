@@ -49,8 +49,8 @@
     <Compile Include="Reader\FileReader\CsvReader.cs" />
     <Compile Include="Reader\IReader.cs" />
     <Compile Include="Models\Formatter\FormatterItemModel.cs" />
-    <Compile Include="Models\Rate\LenderOfferInputModel.cs" />
-    <Compile Include="Models\Rate\RateOutputModel.cs" />
+    <Compile Include="Models\Rate\MarketRateInputModel.cs" />
+    <Compile Include="Models\Rate\MarketRateOutputModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\Constants.cs" />
     <Compile Include="Utils\Formatter.cs" />

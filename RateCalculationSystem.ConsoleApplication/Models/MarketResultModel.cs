@@ -6,6 +6,6 @@ namespace RateCalculationSystem.ConsoleApplication.Models
     {
         public MarketData Data { get; set; }
 
-        public RateOutputModel<T> RepaymentValues { get; set; }
+        public MarketRateOutputModel<T> RepaymentValues { get; set; }
     }
 }

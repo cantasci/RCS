@@ -34,7 +34,7 @@ namespace RateCalculationSystem.ConsoleApplication
     internal class Program
     {
         // constant values
-        private const int TermInMonths = 36;
+        private const int Terms = 36;
 
         private static void Main(string[] args)
         {
@@ -56,7 +56,7 @@ namespace RateCalculationSystem.ConsoleApplication
                 fetchMarketData = fetchMarketData.OrderBy(m => m.Rate).ThenByDescending(m => m.Available).ToList();
 
                 //  init payment calculation engine
-                var paymentCalculation = new PaymentCalculation(TermInMonths);
+                var paymentCalculation = new PaymentCalculation(Terms);
 
                 // get result
                 var result = paymentCalculation.GetOffer(argumentModel, fetchMarketData);
@@ -120,10 +120,10 @@ namespace RateCalculationSystem.ConsoleApplication
         ///     Print Result
         /// </summary>
         /// <param name="result"></param>
-        private static void PrintResult(RateOutputModel<decimal> result)
+        private static void PrintResult(MarketRateOutputModel<decimal> result)
         {
             Console.WriteLine($"Requested amount: £{result.RequstedAmount:0.##}");
-            Console.WriteLine($"Rate: {result.InterestRate:P1}");
+            Console.WriteLine($"Rate: {result.Rate:P1}");
             Console.WriteLine($"Monthly repayment: £{result.MonthlyPayment:0.00}");
             Console.WriteLine($"Total repayment: £{result.TotalPayment:0.00}");
         }
