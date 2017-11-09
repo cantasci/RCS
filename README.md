@@ -1,1 +1,3 @@
-# RateCalculationSystem
+# RCS
+
+Technical Test
