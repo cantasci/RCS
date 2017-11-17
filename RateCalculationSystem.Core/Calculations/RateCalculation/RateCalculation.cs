@@ -1,18 +1,18 @@
 ﻿using System;
-using RateCalculationSystem.Core.Models.Rate;
+using RateCalculationSystem.Common.Models.Rate;
 
 namespace RateCalculationSystem.Core.Calculations.RateCalculation
 {
     /// <summary>
     ///     Decimal Rate Calculation
     /// </summary>
-    public class RateCalculation : ICalculation<MarketRateInputModel<decimal>, MarketRateOutputModel<decimal>>
+    public class RateCalculation : ICalculation<MarketRateInputModel, MarketRateOutputModel>
     {
         /// <summary>
         /// Validate market rate input
         /// </summary>
         /// <param name="marketRateInput"></param>
-        private void ValidateCalculationInput(MarketRateInputModel<decimal> marketRateInput)
+        private void ValidateCalculationInput(MarketRateInputModel marketRateInput)
         {
             // check parameters
             if (marketRateInput == null)
@@ -25,22 +25,28 @@ namespace RateCalculationSystem.Core.Calculations.RateCalculation
                 throw new ArgumentException("Argument rate  must be greater than zero");
         }
 
+        public double PMT(double yearlyInterestRate, int totalNumberOfMonths, double loanAmount)
+        {
+            var rate = (double)yearlyInterestRate / 100 / 12;
+            var denominator = Math.Pow((1 + rate), totalNumberOfMonths) - 1;
+            return (rate + (rate / denominator)) * loanAmount;
+        }
+
         /// <summary>
         ///     Calculate montly repayment and total repayment
         /// </summary>
         /// <param name="marketRateInput"></param>
         /// <returns></returns>
-        public MarketRateOutputModel<decimal> Calculate(MarketRateInputModel<decimal> marketRateInput)
+        public MarketRateOutputModel Calculate(MarketRateInputModel marketRateInput)
         {
             // validate
             ValidateCalculationInput(marketRateInput);
 
             var monthlyRate = marketRateInput.Rate;
 
-            // divi the apr by 100 to get decimal percentage, if necessary
+            // divide the apr by 100 to get decimal percentage, if necessary
             if (marketRateInput.Rate > 0)
                 monthlyRate = monthlyRate / 100;
-
 
             // Monthly rate is the yearly rate divided by 12 
             monthlyRate = marketRateInput.Rate / 12.0;
@@ -49,10 +55,14 @@ namespace RateCalculationSystem.Core.Calculations.RateCalculation
             var monthlyPayment = marketRateInput.Amount * (decimal) monthlyRate /
                                  (decimal) (1 - Math.Pow(1 + monthlyRate, -marketRateInput.Term));
             
+            //var monthlyPayment = (decimal)PMT(marketRateInput.Rate, marketRateInput.Term, marketRateInput.Amount)
+
+
+
             // Calculate the total payment
             var totalPayment = monthlyPayment * marketRateInput.Term;
 
-            return new MarketRateOutputModel<decimal>
+            return new MarketRateOutputModel
             {
                 Rate = marketRateInput.Rate,
                 MonthlyPayment = monthlyPayment,

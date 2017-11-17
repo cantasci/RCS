@@ -3,7 +3,7 @@ using RateCalculationSystem.Common.Models;
 using RateCalculationSystem.Core.Reader;
 using RateCalculationSystem.Core.Reader.FileReader;
 
-namespace RateCalculationSystem.ConsoleApplication.Helper
+namespace RateCalculationSystem.Core.Helper
 {
     public class FileHelper
     {

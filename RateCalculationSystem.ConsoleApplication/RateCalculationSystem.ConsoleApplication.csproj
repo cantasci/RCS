@@ -46,13 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Helper\ErrorMessage.cs" />
-    <Compile Include="Quote\QuoteFinder.cs" />
-    <Compile Include="Extensions\DecimalExtension.cs" />
     <Compile Include="Helper\FileHelper.cs" />
-    <Compile Include="Models\ArgumentModel.cs" />
-    <Compile Include="Models\MarketData.cs" />
-    <Compile Include="Models\MarketResultModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -67,9 +61,17 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\RateCalculationSystem.Common\RateCalculationSystem.Common.csproj">
+      <Project>{a5b193ab-305c-4b2f-93d1-7fdf2aca8c21}</Project>
+      <Name>RateCalculationSystem.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RateCalculationSystem.Core\RateCalculationSystem.Core.csproj">
       <Project>{14213db3-980b-44ba-9b1c-a076fee336eb}</Project>
       <Name>RateCalculationSystem.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RateCalculationSystemBusiness\RateCalculationSystem.Business.csproj">
+      <Project>{C8AE1FFA-1E09-4543-B2D8-48A72C4736D6}</Project>
+      <Name>RateCalculationSystem.Business</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

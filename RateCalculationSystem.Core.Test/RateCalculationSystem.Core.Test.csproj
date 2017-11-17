@@ -59,6 +59,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\RateCalculationSystem.Common\RateCalculationSystem.Common.csproj">
+      <Project>{A5B193AB-305C-4B2F-93D1-7FDF2ACA8C21}</Project>
+      <Name>RateCalculationSystem.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RateCalculationSystem.Core\RateCalculationSystem.Core.csproj">
       <Project>{14213DB3-980B-44BA-9B1C-A076FEE336EB}</Project>
       <Name>RateCalculationSystem.Core</Name>

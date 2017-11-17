@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RateCalculationSystem.ConsoleApplication.Extensions
+namespace RateCalculationSystem.Core.Extensions
 {
     public class DecimalExtension
     {

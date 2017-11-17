@@ -1,4 +1,4 @@
-﻿namespace RateCalculationSystem.ConsoleApplication.Models
+﻿namespace RateCalculationSystem.Common.Models
 {
     public class MarketData
     {

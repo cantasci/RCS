@@ -1,15 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
-using RateCalculationSystem.ConsoleApplication.Helper;
-using RateCalculationSystem.ConsoleApplication.Models;
-using RateCalculationSystem.ConsoleApplication.Quote;
-using RateCalculationSystem.Core.Calculations;
-using RateCalculationSystem.Core.Calculations.RateCalculation;
-using RateCalculationSystem.Core.Models.Rate;
+using RateCalculationSystem.Business.Quote;
+using RateCalculationSystem.Common.Models;
+using RateCalculationSystem.Common.Models.Argument;
+using RateCalculationSystem.Common.Models.Message;
+using RateCalculationSystem.Common.Models.Rate;
+using RateCalculationSystem.Core.Helper;
+using FileHelper = RateCalculationSystem.ConsoleApplication.Helper.FileHelper;
 
 namespace RateCalculationSystem.ConsoleApplication
 { 
@@ -36,16 +35,16 @@ namespace RateCalculationSystem.ConsoleApplication
                 var fetchMarketData = FileHelper.GetLenderMarketData(argumentModel.MarketDataFilePath);
 
                 // order lender offer with rate ascending and available descending
-                fetchMarketData = fetchMarketData.OrderBy(m => m.Rate).ThenByDescending(m => m.Available).ToList();
-
-                //  init payment calculation engine
+                  fetchMarketData = fetchMarketData.OrderBy(m => m.Rate).ThenByDescending(m => m.Available).ToList();
+                
+                // find result
                 var paymentCalculation = new QuoteFinder(Terms);
-
-                // get result
                 var result = paymentCalculation.GetQuote(argumentModel, fetchMarketData);
 
                 // print result
                 PrintResult(result);
+
+                Console.Read();
             }
             catch (Exception e)
             {
@@ -75,17 +74,12 @@ namespace RateCalculationSystem.ConsoleApplication
         {
             try
             {
-                // parse requested amount
                 if (!decimal.TryParse(args[1], out var requestedAmount))
                     throw new FormatException();
-
-                // get path of market data
-                var externalMarketFileName = args[0];
-
-                // return arguments
+                
                 return new ArgumentModel
                 {
-                    MarketDataFilePath = externalMarketFileName,
+                    MarketDataFilePath = args[0],
                     RequestedAmount = requestedAmount
                 };
             }
@@ -103,7 +97,7 @@ namespace RateCalculationSystem.ConsoleApplication
         ///     Print Result
         /// </summary>
         /// <param name="result"></param>
-        private static void PrintResult(MarketRateOutputModel<decimal> result)
+        private static void PrintResult(MarketRateOutputModel result)
         {
             Console.WriteLine($"Requested amount: £{result.RequstedAmount:0.##}");
             Console.WriteLine($"Rate: {result.Rate:P1}");

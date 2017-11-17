@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using RateCalculationSystem.ConsoleApplication.Models;
-using RateCalculationSystem.ConsoleApplication.Quote;
+using RateCalculationSystem.Business.Quote;
+using RateCalculationSystem.Common.Models;
+using RateCalculationSystem.Common.Models.Argument;
+using RateCalculationSystem.Common.Models.Message;
+using RateCalculationSystem.Core.Helper;
 
 namespace RateCalculationSystem.ConsoleApplication.Test
 {
@@ -12,7 +15,7 @@ namespace RateCalculationSystem.ConsoleApplication.Test
         /// <summary>
         ///  Expect exception when borrowers make requested amount which is not between 1000 and 15000
         /// </summary>
-        [TestMethod]
+        [TestMethod] 
         public void expect_exception_when_requested_amount_is_out_of_range()
         {
             QuoteFinder quoteFinder = new QuoteFinder(36);
@@ -22,8 +25,21 @@ namespace RateCalculationSystem.ConsoleApplication.Test
                 RequestedAmount = 500
             };
 
-            // excepted an exception with message "Requested amount must be between 1000 and 15000"
-            ExpectException<Exception>(() => quoteFinder.GetQuote(externalArgument, emptyMarketData));
+            Exception exception = null;
+            try
+            {
+
+                quoteFinder.GetQuote(externalArgument, emptyMarketData);
+            }
+            catch (Exception e)
+            {
+                exception = e;
+            }
+
+
+            var isTrue = CheckException(exception, ErrorMessage.RequestedAmountOutOfRange);
+            Assert.IsTrue(isTrue);
+
         }
 
         /// <summary>
@@ -39,15 +55,27 @@ namespace RateCalculationSystem.ConsoleApplication.Test
                 RequestedAmount = 1010
             };
 
-            // excepted an exception with message "You should request only loan amount which is multiples of 100"
-            ExpectException<Exception>(() => quoteFinder.GetQuote(externalArgument, emptyMarketData));
+            Exception exception = null;
+            try
+            {
+                quoteFinder.GetQuote(externalArgument, emptyMarketData);
+            }
+            catch (Exception e)
+            {
+                exception = e;
+            }
+
+
+            var isTrue = CheckException(exception, ErrorMessage.RequestedAmountIsNotMultipleOf100);
+            Assert.IsTrue(isTrue);
+
 
         }
 
         /// <summary>
         /// Except exception when there is no available lender offer
         /// </summary>
-        [TestMethod]
+        [TestMethod] 
         public void expect_exception_when_there_is_no_lender_offer()
         {
             QuoteFinder quoteFinder = new QuoteFinder(36);
@@ -57,27 +85,27 @@ namespace RateCalculationSystem.ConsoleApplication.Test
                 RequestedAmount = 1000
             };
 
-            // excepted an exception with message "It is not possible to provide a quoteFinder at this time"
-            ExpectException<Exception>(() => quoteFinder.GetQuote(externalArgument, emptyMarketData));
+            Exception exception = null;
+            try
+            {
+                 
+                quoteFinder.GetQuote(externalArgument, emptyMarketData);
+            }
+            catch (Exception e)
+            {
+                exception = e;
+            }
+
+
+            var isTrue = CheckException(exception, ErrorMessage.ThereIsNoAvailableOffer);
+            Assert.IsTrue(isTrue);
 
         }
 
-        /// <summary>
-        ///     Generic function for exception
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="action"></param>
-        public static void ExpectException<T>(Action action) where T : Exception
+        private bool CheckException(Exception exception, string message)
         {
-            try
-            {
-                action();
-                Assert.Fail("Expected exception " + typeof(T).Name);
-            }
-            catch (T exception)
-            {
-                Assert.AreEqual(typeof(T).Name, exception.GetType().Name);
-            }
+            return exception != null &&
+                   exception.Message.Equals(message);
         }
     }
 }
