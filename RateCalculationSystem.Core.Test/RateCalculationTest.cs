@@ -1,5 +1,7 @@
 ﻿using System;
+using System.ComponentModel.Design;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using RateCalculationSystem.Common.Models.Message;
 using RateCalculationSystem.Common.Models.Rate;
 using RateCalculationSystem.Core.Calculations;
 using RateCalculationSystem.Core.Calculations.RateCalculation;
@@ -13,40 +15,95 @@ namespace RateCalculationSystem.Core.Test
         ///     Expect exception when argument equals null
         /// </summary>
         [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void expect_exception_when_argument_equals_null()
         {
             ICalculation<MarketRateInputModel, MarketRateOutputModel> rateCalculation =
                 new RateCalculation();
 
-            ExpectException<ArgumentNullException>(() => rateCalculation.Calculate(null));
+            rateCalculation.Calculate(null);
         }
 
 
         /// <summary>
-        ///     Except exception when arguments equal zero
+        ///     Except exception when amount equal zero
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void expect_exception_when_arguments_equal_zero()
+        public void expect_exception_when_amount_equals_zero()
+        {
+            ICalculation<MarketRateInputModel, MarketRateOutputModel> rateCalculation =
+                new RateCalculation();
+
+            var loanAmount = 0;
+            var rate = 0.07;
+            var term = 36;
+
+            Exception exception = null;
+            try
+            {
+                rateCalculation.Calculate(new MarketRateInputModel(loanAmount, term, rate));
+            }
+            catch (Exception ex)
+            {
+                exception = ex;
+            }
+
+            var isTrue = CheckException(exception, ErrorMessage.ArgumentAmountGreaterThanZero);
+            Assert.IsTrue(isTrue);
+        }
+
+        /// <summary>
+        ///     Except exception when term equal zero
+        /// </summary>
+        [TestMethod] 
+        public void expect_exception_when_term_equals_zero()
         {
             ICalculation<MarketRateInputModel, MarketRateOutputModel> rateCalculation =
                 new RateCalculation();
 
             var loanAmount = 1000;
             var rate = 0.07;
+            var term = 0;
+
+            Exception exception = null;
+            try
+            {
+                rateCalculation.Calculate(new MarketRateInputModel(loanAmount, term, rate));
+            }
+            catch (Exception ex)
+            {
+                exception = ex;
+            }
+
+            var isTrue = CheckException(exception, ErrorMessage.ArgumentTermGreaterThanZero);
+            Assert.IsTrue(isTrue);
+        }
+
+        /// <summary>
+        ///     Except exception when arguments equal zero
+        /// </summary>
+        [TestMethod]
+        public void expect_exception_when_interest_rate_equal_zero()
+        {
+            ICalculation<MarketRateInputModel, MarketRateOutputModel> rateCalculation =
+                new RateCalculation();
+
+            var loanAmount = 1000;
+            var rate = 0;
             var term = 36;
 
-            // except exception because of amount equals zero
-            ExpectException<ArgumentException>(() =>
-                rateCalculation.Calculate(new MarketRateInputModel(0, term, rate)));
+            Exception exception = null;
+            try
+            {
+                rateCalculation.Calculate(new MarketRateInputModel(loanAmount, term, rate));
+            }
+            catch (Exception ex)
+            {
+                exception = ex;
+            }
 
-            // except exception because of term equals zero
-            ExpectException<ArgumentException>(() =>
-                rateCalculation.Calculate(new MarketRateInputModel(loanAmount, 0, rate)));
-
-            // except exception because of rate equals zero
-            ExpectException<ArgumentException>(() =>
-                rateCalculation.Calculate(new MarketRateInputModel(loanAmount, term, 0)));
+            var isTrue = CheckException(exception, ErrorMessage.ArgumentRateGreaterThanZero);
+            Assert.IsTrue(isTrue);
         }
 
         /// <summary>
@@ -108,25 +165,14 @@ namespace RateCalculationSystem.Core.Test
             Assert.AreEqual(expectedTotalPayment, currentTotalPayment);
         }
 
-       
 
 
-        /// <summary>
-        ///     Generic function for exception
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="action"></param>
-        public static void ExpectException<T>(Action action) where T : Exception
+
+        private bool CheckException(Exception exception, string message)
         {
-            try
-            {
-                action();
-                Assert.Fail("Expected exception " + typeof(T).Name);
-            }
-            catch (T exception)
-            {
-                Assert.AreEqual(typeof(T).Name, exception.GetType().Name);
-            }
+            return exception != null &&
+                   exception.Message.Equals(message);
         }
+
     }
 }

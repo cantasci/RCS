@@ -37,8 +37,10 @@ namespace RateCalculationSystem.ConsoleApplication
                 // order lender offer with rate ascending and available descending
                   fetchMarketData = fetchMarketData.OrderBy(m => m.Rate).ThenByDescending(m => m.Available).ToList();
                 
-                // find result
+                
                 var paymentCalculation = new QuoteFinder(Terms);
+                
+                // find result
                 var result = paymentCalculation.GetQuote(argumentModel, fetchMarketData);
 
                 // print result

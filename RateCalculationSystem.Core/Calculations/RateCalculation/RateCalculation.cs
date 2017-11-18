@@ -1,4 +1,5 @@
 ﻿using System;
+using RateCalculationSystem.Common.Models.Message;
 using RateCalculationSystem.Common.Models.Rate;
 
 namespace RateCalculationSystem.Core.Calculations.RateCalculation
@@ -18,11 +19,11 @@ namespace RateCalculationSystem.Core.Calculations.RateCalculation
             if (marketRateInput == null)
                 throw new ArgumentNullException("marketRateInput");
             if (marketRateInput.Amount <= 0)
-                throw new ArgumentException("Argument amount must be greater than zero");
+                throw new ArgumentException(ErrorMessage.ArgumentAmountGreaterThanZero);
             if (marketRateInput.Term <= 0)
-                throw new ArgumentException("Argument termInMonth  must be greater than zero");
+                throw new ArgumentException(ErrorMessage.ArgumentTermGreaterThanZero);
             if (marketRateInput.Rate <= 0)
-                throw new ArgumentException("Argument rate  must be greater than zero");
+                throw new ArgumentException(ErrorMessage.ArgumentRateGreaterThanZero);
         }
 
         public double PMT(double yearlyInterestRate, int totalNumberOfMonths, double loanAmount)

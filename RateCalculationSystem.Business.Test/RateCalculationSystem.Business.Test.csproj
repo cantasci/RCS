@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{EBAA2D96-84C7-44D8-AC04-1D54AD6390BD}</ProjectGuid>
+    <ProjectGuid>{AFC95505-65A3-4DAB-8315-9F53F9FCEEB3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RateCalculationSystem.Core.Test</RootNamespace>
-    <AssemblyName>RateCalculationSystem.Core.Test</AssemblyName>
+    <RootNamespace>RateCalculationSystem.Business.Test</RootNamespace>
+    <AssemblyName>RateCalculationSystem.Business.Test</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -38,10 +38,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CsvHelper, Version=5.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
-      <HintPath>..\packages\CsvHelper.5.0.0.1\lib\net45\CsvHelper.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\MSTest.TestFramework.1.2.0\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.dll</HintPath>
     </Reference>
@@ -52,20 +48,20 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="RateCalculationTest.cs" />
+    <Compile Include="QuoteFinderTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\RateCalculationSystem.Businesss\RateCalculationSystem.Business.csproj">
+      <Project>{F08FE1E3-8DD8-401F-9F11-54E2BAA07A4B}</Project>
+      <Name>RateCalculationSystem.Business</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RateCalculationSystem.Common\RateCalculationSystem.Common.csproj">
       <Project>{A5B193AB-305C-4B2F-93D1-7FDF2ACA8C21}</Project>
       <Name>RateCalculationSystem.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\RateCalculationSystem.Core\RateCalculationSystem.Core.csproj">
-      <Project>{748B075D-695C-411D-92EE-2A63C350BC1E}</Project>
-      <Name>RateCalculationSystem.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

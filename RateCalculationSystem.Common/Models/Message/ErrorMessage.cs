@@ -12,5 +12,8 @@
         public const string CouldNotResolveArguments = "Could not resolve arguments. " + SampleUsage;
         public const string RequestedAmountOutOfRange = "Requested amount must be between 1000 and 15000";
         public const string RequestedAmountIsNotMultipleOf100 = "You should request only loan amount which is multiples of 100";
+        public const string ArgumentAmountGreaterThanZero = "Argument amount must be greater than zero";
+        public const string ArgumentTermGreaterThanZero = "Argument termInMonth must be greater than zero";
+        public const string ArgumentRateGreaterThanZero = "Argument rate must be greater than zero";
     }
 }
