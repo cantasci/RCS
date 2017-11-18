@@ -17,9 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{5A58E787-A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RateCalculationSystem.Common", "RateCalculationSystem.Common\RateCalculationSystem.Common.csproj", "{A5B193AB-305C-4B2F-93D1-7FDF2ACA8C21}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RateCalculationSystem.Business.Test", "RateCalculationSystem.Business.Test\RateCalculationSystem.Business.Test.csproj", "{AFC95505-65A3-4DAB-8315-9F53F9FCEEB3}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RateCalculationSystem.Business", "RateCalculationSystem.Businesss\RateCalculationSystem.Business.csproj", "{F08FE1E3-8DD8-401F-9F11-54E2BAA07A4B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RateCalculationSystem.Business", "RateCalculationSystem.Business\RateCalculationSystem.Business.csproj", "{F08FE1E3-8DD8-401F-9F11-54E2BAA07A4B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

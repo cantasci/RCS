@@ -40,7 +40,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Quote\IQuoteFinder.cs" />
     <Compile Include="Quote\QuoteFinder.cs" />
@@ -49,6 +48,10 @@
     <ProjectReference Include="..\RateCalculationSystem.Common\RateCalculationSystem.Common.csproj">
       <Project>{a5b193ab-305c-4b2f-93d1-7fdf2aca8c21}</Project>
       <Name>RateCalculationSystem.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RateCalculationSystem.Core\RateCalculationSystem.Core.csproj">
+      <Project>{748b075d-695c-411d-92ee-2a63c350bc1e}</Project>
+      <Name>RateCalculationSystem.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

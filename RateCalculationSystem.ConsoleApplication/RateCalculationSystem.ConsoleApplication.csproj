@@ -61,7 +61,7 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RateCalculationSystem.Businesss\RateCalculationSystem.Business.csproj">
+    <ProjectReference Include="..\RateCalculationSystem.Business\RateCalculationSystem.Business.csproj">
       <Project>{F08FE1E3-8DD8-401F-9F11-54E2BAA07A4B}</Project>
       <Name>RateCalculationSystem.Business</Name>
     </ProjectReference>
